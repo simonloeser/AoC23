@@ -22,32 +22,24 @@ public class Day1 {
         input = ReadInput.getText("Day1");
 
         // Part 1
-        System.out.println("Part 1: " + addLineNumbers(input));
+        System.out.println("Part 1: " + addLineNumbers());
 
         // Part 2
         System.out.println("Part 2: " + replaceNumberWords());
     }
 
     private static int replaceNumberWords() {
-        Pattern pattern = Pattern.compile("\\b(?:" + String.join("|", wordFormToNumberMap.keySet()) + ")\\b");
-
-        String[] modifiedInput = new String[input.length];
-
         for (int i = 0; i < input.length; i++) {
-            Matcher matcher = pattern.matcher(input[i]);
-            StringBuilder result = new StringBuilder();
-            while (matcher.find()) {
-                matcher.appendReplacement(result, wordFormToNumberMap.get(matcher.group()));
+            for (String pattern : wordFormToNumberMap.keySet()) {
+                input[i] = input[i].replaceAll(pattern, wordFormToNumberMap.get(pattern));
             }
-            matcher.appendTail(result);
-            modifiedInput[i] = result.toString();
         }
-        return addLineNumbers(modifiedInput);
+        return addLineNumbers();
     }
 
-    private static int addLineNumbers(String[] array) {
+    private static int addLineNumbers() {
         int sum = 0;
-        for (String line : array) {
+        for (String line : input) {
             StringBuilder numbers = new StringBuilder();
 
             for (int i = 0; i < line.length(); i++) {
